@@ -276,15 +276,28 @@
 
     <div class="result-title" id="resultTitle"></div>
 
-    <div class="result-desc" id="resultDesc"></div>
-
     <div class="tips-box">
-      <h4>💡 护理建议</h4>
-      <p id="resultAdvice"></p>
+      <h4>🔍 我们发现</h4>
+      <p id="resultFind"></p>
     </div>
 
     <div class="tips-box">
-      <h4>✨ 做完后你会明显感觉</h4>
+      <h4>⚠️ 为什么会出现这个问题？</h4>
+      <p id="resultWhy"></p>
+    </div>
+
+    <div class="tips-box">
+      <h4>✅ 洗脸猫改善方案</h4>
+      <p style="font-weight:bold;font-size:18px;color:#ff9800;" id="resultPlan"></p>
+    </div>
+
+    <div class="tips-box">
+      <h4>🧴 护理步骤</h4>
+      <p id="resultSteps"></p>
+    </div>
+
+    <div class="tips-box">
+      <h4>💡 做完效果</h4>
       <p id="resultEffect"></p>
     </div>
 
@@ -293,9 +306,26 @@
 </div>
 
 <div class="floating-btn" id="bookingBtn" style="display:none;">
-  <button class="booking-btn" onclick="alert('请替换为你的微信/预约链接')">
-    立即领取专属护理福利 🎁
+  <button class="booking-btn" onclick="openPopup()">
+    找吨吨领取专属福利 🎁
   </button>
+</div>
+
+<div id="popup" style="display:none;position:fixed;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.65);z-index:9999;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#fff;border-radius:24px;padding:24px;max-width:360px;width:100%;text-align:center;position:relative;">
+
+    <div onclick="closePopup()" style="position:absolute;right:18px;top:12px;font-size:28px;cursor:pointer;color:#999;">×</div>
+
+    <h3 style="margin-bottom:12px;font-size:24px;">🎁 扫码领取专属福利</h3>
+
+    <p style="font-size:14px;color:#666;line-height:1.8;margin-bottom:18px;">
+      添加吨吨领取专属护肤福利<br>
+      到店还可领取洁面慕斯哦～
+    </p>
+
+    <img src="皮肤AI问卷.png" style="width:240px;border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.08);">
+
+  </div>
 </div>
 
 <script>
@@ -384,50 +414,62 @@ const results = [
 {
 min:7,
 max:10,
-title:'毛孔堵塞型肌肤',
-desc:'你的皮肤容易出油、黑头反复出现，尤其鼻头和下巴区域，总感觉洗不干净。',
-advice:'推荐【孔夫仔泡冲洗脸】深层清洁毛孔、软化黑头、调节水油平衡。',
-effect:'黑头减少、皮肤更清爽、毛孔看起来更细腻。'
+title:'📋 你的皮肤诊断：毛孔堵塞型肌肤',
+find:'你可能经常感觉脸洗不干净，鼻头黑头明显，下午容易满脸油光。',
+why:'脸部油脂分泌旺盛后，废旧角质和油脂容易堵塞毛孔，就容易形成黑头闭口。',
+plan:'孔夫仔泡冲洗脸',
+steps:['深层清洁毛孔','软化黑头油脂','调节水油平衡'],
+effect:'皮肤更清爽、黑头减少、毛孔更细腻。'
 },
 {
 min:11,
 max:15,
-title:'缺水屏障型肌肤',
-desc:'你的皮肤容易卡粉、紧绷、粗糙，补水很多但状态还是反复。',
-advice:'推荐【好多水泡冲洗脸】深层补水、修护屏障、增强锁水能力。',
-effect:'皮肤更水润、妆容更服帖、干燥感明显减少。'
+title:'📋 你的皮肤诊断：缺水屏障型肌肤',
+find:'你最近可能容易卡粉、皮肤粗糙，洗完脸后有明显紧绷感。',
+why:'皮肤缺水后，角质层锁水能力就会下降，所以屏障会越来越脆弱。',
+plan:'好多水泡冲洗脸',
+steps:['深层补水','修护屏障','增强锁水能力'],
+effect:'皮肤更水润、妆容更服帖、减少干纹粗糙感。'
 },
 {
 min:16,
 max:20,
-title:'熬夜暗沉型肌肤',
-desc:'你的皮肤容易暗黄、没气色，熬夜后整个人看起来特别疲惫。',
-advice:'推荐【告白泡冲洗脸】提亮肤色、改善暗沉、提升通透感。',
-effect:'气色更好、皮肤更透亮、整个人更显精神。'
+title:'📋 你的皮肤诊断：熬夜暗沉型肌肤',
+find:'你最近可能脸色暗黄、没气色，看起来总是很疲惫。',
+why:'熬夜会导致皮肤循环变差，代谢减慢，因此肤色更容易暗沉。',
+plan:'告白泡冲洗脸',
+steps:['提亮肤色','改善暗沉','提升皮肤通透感'],
+effect:'肤色更透亮、气色更好、皮肤更有光泽感。'
 },
 {
 min:21,
 max:25,
-title:'疲劳型眼周肌',
-desc:'你的黑眼圈、眼周浮肿和细纹已经开始偷偷暴露疲惫感。',
-advice:'推荐【微笑PASTA泡冲洗脸】温感按摩、射频导入、消水肿护理。',
-effect:'黑眼圈减淡、眼周更平滑、眼睛更有神。'
+title:'📋 你的皮肤诊断：疲劳型眼周肌',
+find:'你的黑眼圈明显、眼周有细纹，或者眼睛容易浮肿没精神。',
+why:'眼周皮肤是全身最薄的区域(只有面部皮肤的1/3)，没有皮脂腺，最容易干燥长纹。熬夜、用眼过度导致循环差，形成黑眼圈和浮肿。',
+plan:'微笑PASTA泡冲洗脸',
+steps:['温感按摩','射频导入','消水肿护理'],
+effect:'黑眼圈淡化、眼周细纹减少、眼睛更有神。'
 },
 {
 min:26,
 max:30,
-title:'初老松弛型肌肤',
-desc:'你的轮廓线开始变松，法令纹和下垂感越来越明显。',
-advice:'推荐【普拉提泡冲洗脸】提拉紧致、激活胶原、改善轮廓松弛。',
-effect:'轮廓更紧致、法令纹减淡、脸更显年轻。'
+title:'📋 你的皮肤诊断：初老松弛型肌肤',
+find:'你可能开始感觉法令纹明显，拍照时轮廓没有以前紧致。',
+why:'25岁后胶原流失会逐渐加快，熬夜和压力会进一步加重松弛问题。',
+plan:'普拉提泡冲洗脸',
+steps:['提拉紧致','激活胶原','改善松弛问题'],
+effect:'轮廓更紧致、法令纹减淡、脸部状态更年轻。'
 },
 {
 min:31,
 max:42,
-title:'敏感脆弱型肌肤',
-desc:'你的皮肤容易泛红、刺痛、换季不稳定，已经进入“脆皮状态”。',
-advice:'推荐【告白修护护理】舒缓泛红、修护屏障、提升稳定性。',
-effect:'泛红减少、皮肤更稳定、舒适感明显提升。'
+title:'📋 你的皮肤诊断：敏感脆弱型肌肤',
+find:'你的皮肤可能更容易泛红、刺痛，换季时状态不稳定。',
+why:'当皮肤屏障受损后，外界刺激更容易进入皮肤，就会引发敏感泛红。',
+plan:'告白修护护理',
+steps:['舒缓泛红','修护屏障','提升皮肤稳定性'],
+effect:'皮肤更稳定、泛红减少、舒适度提升。'
 }
 ];
 
@@ -498,9 +540,20 @@ function showResult(){
   const result = results.find(r=> totalScore >= r.min && totalScore <= r.max);
 
   document.getElementById('resultTitle').innerText = result.title;
-  document.getElementById('resultDesc').innerText = result.desc;
-  document.getElementById('resultAdvice').innerText = result.advice;
-  document.getElementById('resultEffect').innerText = result.effect;
+  document.getElementById('resultTitle').innerText = result.title;
+document.getElementById('resultFind').innerText = result.find;
+document.getElementById('resultWhy').innerText = result.why;
+document.getElementById('resultPlan').innerText = '【'+result.plan+'】';
+document.getElementById('resultSteps').innerHTML = `1️⃣ ${result.steps[0]}<br><br>2️⃣ ${result.steps[1]}<br><br>3️⃣ ${result.steps[2]}`;
+document.getElementById('resultEffect').innerText = result.effect;
+}
+
+function openPopup(){
+  document.getElementById('popup').style.display='flex';
+}
+
+function closePopup(){
+  document.getElementById('popup').style.display='none';
 }
 
 </script>
